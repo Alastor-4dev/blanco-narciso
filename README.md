@@ -2,7 +2,7 @@
 
 > Landing page estática para **Blanco Narciso**, estudio floral boutique ubicado en Av. Vallarta, Guadalajara, Jalisco.
 
-[![CI](https://github.com/tu-usuario/blanco-narciso/actions/workflows/ci.yml/badge.svg)](https://github.com/tu-usuario/blanco-narciso/actions/workflows/ci.yml)
+[![CI](https://github.com/Alastor-4dev/blanco-narciso/actions/workflows/ci.yml/badge.svg)](https://github.com/Alastor-4dev/blanco-narciso/actions/workflows/ci.yml)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
@@ -89,7 +89,7 @@ public/_headers              # Headers para Cloudflare Pages y hosting compatibl
 
 ```bash
 # 1. Clonar
-git clone https://github.com/tu-usuario/blanco-narciso.git
+git clone https://github.com/Alastor-4dev/blanco-narciso.git
 cd blanco-narciso
 
 # 2. Instalar dependencias (requiere Node 20+)
