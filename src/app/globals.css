@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bn-navy: #1a2b4a;
+  --color-bn-navy-soft: #2f4d7a;
+  --color-bn-ice: #eef2f8;
+  --color-bn-cloud: #f7f9fc;
+  --color-bn-gold: #c9a96a;
+  --color-bn-gold-soft: #d9bf8a;
+  --color-bn-ink: #14213d;
+
+  --font-display: var(--font-display), ui-serif, Georgia, serif;
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #ffffff;
+  color: var(--color-bn-navy);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.gold-divider {
+  display: inline-block;
+  width: 48px;
+  height: 1px;
+  background: var(--color-bn-gold);
+  vertical-align: middle;
+}
+
+::selection {
+  background: var(--color-bn-navy);
+  color: #fff;
+}

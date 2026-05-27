@@ -1,0 +1,40 @@
+# Blanco Narciso · Netlify configuration
+# Docs: https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  publish = "out"
+
+# Security headers applied to every response
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Prevent clickjacking — the site must never load inside an iframe
+    X-Frame-Options = "DENY"
+    # Prevent MIME-type sniffing
+    X-Content-Type-Options = "nosniff"
+    # Control how much referrer info is sent to external sites
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # Restrict browser feature access
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+    # Content Security Policy
+    # - default-src 'self'           → only own origin by default
+    # - script-src 'unsafe-inline'   → required by Next.js static hydration
+    # - style-src 'unsafe-inline'    → required by Tailwind + Framer Motion
+    # - img-src data: https:         → next/image + any HTTPS image
+    # - font-src 'self'              → fonts self-hosted via next/font
+    # - frame-ancestors 'none'       → secondary clickjacking protection
+    # - form-action 'self'           → prevent form submissions to third-party URLs
+    # - base-uri 'self'              → prevent base tag injection
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'"
+
+# Cache static assets aggressively (fingerprinted filenames)
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Never cache HTML (always fresh)
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

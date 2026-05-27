@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Claude Code dev tooling
+.claude/settings.local.json
+
+# Source design assets (large originals — not needed in repo)
+../Imagenes/
+
+# Deployable static export (regenerate with: npm run build)
+../Upload/
