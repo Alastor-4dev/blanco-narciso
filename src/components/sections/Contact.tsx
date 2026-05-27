@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/ui/Img";
 import { Instagram, Mail, MapPin, Phone, Send } from "lucide-react";
 import { useState } from "react";
 import Reveal from "@/components/ui/Reveal";

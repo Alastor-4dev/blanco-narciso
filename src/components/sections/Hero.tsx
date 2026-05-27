@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/ui/Img";
 import { motion } from "framer-motion";
 import { ArrowDownRight } from "lucide-react";
 
