@@ -1,13 +1,19 @@
 {
   "name": "blanco-narciso",
   "version": "1.0.0",
-  "description": "E-commerce Blanco Narciso · Estudio Floral",
+  "description": "E-commerce Blanco Narciso \u00b7 Estudio Floral",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test:wallet": "node --test tests/wallet-pilot.test.js",
+    "wallet:prepare": "node scripts/prepare-wallet-pilot.js",
+    "wallet:pilot": "node scripts/start-wallet-pilot.js"
   },
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "qrcode": "^1.5.4"
   }
 }

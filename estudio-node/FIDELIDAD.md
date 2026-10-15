@@ -1,4 +1,34 @@
-# Círculo Narciso · Diseño e implementación
+# Blanco Narciso · Fidelidad y Google Wallet
+
+
+## Estado de la integración Google Wallet
+
+Se comprobó acceso real por API al emisor y a la plantilla original. La clase original `blanco_narciso_fidelidad` se conserva en borrador. Se creó una clase independiente `bn_prueba_tecnica_v1`, aprobada por Google, y una tarjeta ficticia `bn_prueba_local_0001`, con ID visible `BNTEST0001`. No se solicitó publicación general del emisor ni se modificó la plantilla original.
+
+La clave se trasladó fuera del repositorio a la carpeta privada `~/.config/blanco-narciso/`, con directorio 700 y archivo 600. Nunca subir credenciales, configuración privada ni el historial local a GitHub. No se usan credenciales en frontend.
+
+### Usar el piloto local
+
+```sh
+node scripts/start-wallet-pilot.js
+```
+
+Abrir http://localhost:3101/wallet-pilot. El piloto solo escucha en la interfaz local de esta Mac y sus rutas están desactivadas por defecto en el servidor normal. No es el panel definitivo de empleados ni se debe publicar como tal. Emite un enlace firmado y un QR para guardar una única tarjeta ficticia. Usar en Android con la cuenta administradora del emisor o una cuenta de prueba autorizada en Wallet Console. El usuario confirma que quiere guardar el pase. El mismo QR de prueba no sirve como alta pública de varios clientes: todos sus usos apuntan a la misma tarjeta de prueba.
+
+El formulario de compras ficticias guarda el importe y referencia de ticket en un registro privado local y actualiza el objeto remoto de Google. Rechaza tickets duplicados y conserva el registro para reintentar si falla la sincronización. El piloto limita el saldo a 2,500 puntos; falta decidir reglas para excedentes y canjes de producción. El panel muestra el resultado de enviar el saldo, no una confirmación de que el teléfono ya lo haya recibido.
+
+### Validación realizada
+
+- Autenticación con cuenta de servicio y lectura de la clase real.
+- Creación del pase técnico y QR/enlace firmado.
+- Compra ficticia de $500: la API de Google confirmó 500 puntos y un sello; el ticket duplicado fue rechazado.
+- Saldo de prueba restaurado a cero antes de entregar el panel.
+- Pruebas de firma, caché de token, cálculos, tickets duplicados, operaciones simultáneas y conservación del movimiento cuando falla la red.
+- Bloqueo de solicitudes sin origen/cabecera local y de Host ajeno; panel comprobado en escritorio y móvil.
+- Sin validación todavía en Android físico, sin integración de Apple Wallet ni registro real de clientes.
+
+El sitio público en GitHub Pages sigue siendo una muestra estática. La tarjeta del formulario público no está enlazada al piloto ni crea miembros; hace falta backend HTTPS, persistencia de clientes, autenticación del personal y revisión de privacidad antes de operar con datos reales.
+
 
 ## Qué se identificó en las capturas
 
@@ -25,7 +55,7 @@ Abre `http://localhost:3000/fidelidad`. Si el servidor ya estaba abierto antes d
 
 Cinco sellos y límite de 2,500 puntos. Al completar los cinco sellos, canje por un arreglo mediano o un arreglo equivalente al precio del mediano vigente el día del canje. Tarjeta y premio personales e intransferibles; no acumulables con otras promociones, descuentos o cupones; sin canje por efectivo. El canje debe quedar registrado y consumir los cinco sellos utilizados. Disponibilidad de flores sujeta a existencias; pedidos cancelados o reembolsados no acreditan beneficios.
 
-Relación confirmada por el usuario: $1 MXN comprado = 1 punto; cada 500 puntos completa un sello; 2,500 puntos completa cinco sellos y habilita el premio. La tarjeta muestra esa equivalencia. Los $1,000 MXN, 1,000 puntos y dos sellos son datos de muestra, no saldo real. Falta definir vigencia, diferencias de precio y tratamiento del excedente de compras que superen la meta de 2,500 puntos. El usuario confirmó que no tiene cuentas ni proveedor de emisión; la emisión real continúa pendiente de configurar.
+Relación confirmada por el usuario: $1 MXN comprado = 1 punto; cada 500 puntos completa un sello; 2,500 puntos completa cinco sellos y habilita el premio. La tarjeta muestra esa equivalencia. Los $1,000 MXN, 1,000 puntos y dos sellos son datos de muestra, no saldo real. Falta definir vigencia, diferencias de precio y tratamiento del excedente de compras que superen la meta de 2,500 puntos. Ya existe una cuenta de emisor Google y una cuenta de servicio autorizada. Se configuró emisión y actualización de una tarjeta técnica de prueba; el registro público y Apple Wallet continúan pendientes.
 
 ## Cómo funcionaría para el cliente y el equipo
 

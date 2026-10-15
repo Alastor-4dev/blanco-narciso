@@ -24,6 +24,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Wallet pilot dependencies
+        run: npm ci --prefix estudio-node
+
+      - name: Test Wallet pilot without credentials
+        run: npm run test:wallet --prefix estudio-node
+
       - name: Type-check
         run: npx tsc --noEmit
 

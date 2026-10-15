@@ -8,3 +8,7 @@ npm-debug.log*
 *.pem
 *.p12
 *.key
+
+# Credenciales privadas Google Wallet
+*service-account*.json
+*wallet-key*.json

@@ -18,7 +18,7 @@ const DATA_FILE = path.join(__dirname, 'data', 'products.json');
 // como variables de entorno en el panel de tu hosting.
 const IS_PRODUCTION = process.env.NODE_ENV === 'production' || Boolean(process.env.PORT);
 if (!process.env.ADMIN_PASSWORD) {
-  console.error('ERROR: configura ADMIN_PASSWORD en el entorno antes de iniciar el servidor.');
+  console.error('ERROR: en producción debes configurar la variable de entorno ADMIN_PASSWORD. El servidor no arrancará sin ella.');
   process.exit(1);
 }
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
@@ -44,6 +44,9 @@ app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/index.html', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/admin.html', (req, res) => res.sendFile(path.join(__dirname, 'admin.html')));
 app.get(['/fidelidad', '/fidelidad.html'], (req, res) => res.sendFile(path.join(__dirname, 'fidelidad.html')));
+
+// Piloto Wallet: rutas locales desactivadas por defecto.
+require('./lib/wallet-pilot-routes')(app);
 
 // ── Productos: lectura/escritura ───────────────────────────
 function readProducts() {
@@ -229,7 +232,7 @@ app.post('/api/checkout', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, process.env.WALLET_PILOT_ENABLED === '1' ? '127.0.0.1' : undefined, () => {
   console.log(`Blanco Narciso corriendo en http://localhost:${PORT}`);
   console.log(`Panel admin: http://localhost:${PORT}/admin.html`);
   if (!MP_ACCESS_TOKEN) console.log('⚠ MP_ACCESS_TOKEN no configurado: el checkout devolverá error hasta que lo agregues.');

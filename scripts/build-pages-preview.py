@@ -13,6 +13,9 @@ if OUT.exists():
 OUT.mkdir()
 for folder in ('css', 'js', 'img'):
     shutil.copytree(SOURCE / folder, OUT / folder)
+# Los controles del piloto local no forman parte de la web pública.
+for local_asset in ('js/wallet-pilot.js', 'css/wallet-pilot.css'):
+    (OUT / local_asset).unlink(missing_ok=True)
 (OUT / 'data').mkdir()
 shutil.copy2(SOURCE / 'data/products.json', OUT / 'data/products.json')
 (OUT / '.nojekyll').touch()

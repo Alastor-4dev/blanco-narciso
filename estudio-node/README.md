@@ -34,3 +34,10 @@ Se incluye `render.yaml` en la raíz como configuración inicial opcional. Usa a
 https://alastor-4dev.github.io/blanco-narciso/img/logo-navy.png
 
 Coincide con el archivo local `img/logo-navy.png` y se comprobó accesible por HTTPS.
+
+
+## Piloto local de Google Wallet
+
+La conexión por cuenta de servicio ya permite emitir y actualizar una tarjeta técnica independiente. Ejecuta `npm run wallet:prepare` con tus credenciales privadas configuradas para preparar el piloto; `npm run wallet:pilot` abre un servidor exclusivo en `http://localhost:3101/wallet-pilot`. Solo escucha en loopback y sus rutas están deshabilitadas por defecto. Los datos de prueba y la configuración viven fuera del repositorio. El QR es de una tarjeta ficticia única, no un enlace de alta pública. Nunca configurar este piloto como panel de producción.
+
+Validación automática sin credenciales: `npm run test:wallet`. El registro de clientes, el panel de empleados de producción y Apple Wallet siguen pendientes. Ver `FIDELIDAD.md` para detalles de validación y límites.
