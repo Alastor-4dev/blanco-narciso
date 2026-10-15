@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blanco Narciso — Estudio Floral · Guadalajara</title>
+  <meta name="description"
+    content="Estudio floral en Av. Vallarta, Guadalajara. Arreglos artesanales, bodas y suscripciones premium hechas a mano con flor de temporada.">
+  <meta name="robots" content="index, follow">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://blanconarciso.mx">
+  <meta property="og:title" content="Blanco Narciso — Estudio Floral">
+  <meta property="og:description"
+    content="Diseño botánico hecho a mano. Flores de temporada, bodas íntimas y suscripciones en Guadalajara.">
+  <meta property="og:image" content="img/principal.png">
+
+  <!-- Security headers (fallback meta) -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Inter:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/avoda" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/brittany-signature" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- ════════════════════════════════════════
+       NAVBAR
+       ════════════════════════════════════════ -->
+  <header id="navbar" role="banner">
+    <div class="container">
+      <div class="nav-inner">
+
+        <!-- Brand -->
+        <a href="#top" class="nav-brand" aria-label="Blanco Narciso, inicio">
+          <img src="img/logo.png" alt="" width="48" height="48">
+          <span class="nav-brand-text">
+            <span class="nav-wordmark">Blanco <em>Narciso</em></span>
+            <span class="nav-tagline">Estudio Floral</span>
+          </span>
+        </a>
+
+        <!-- Desktop nav -->
+        <nav class="nav-links" aria-label="Navegación principal">
+          <a href="#coleccion">Colección</a>
+          <a href="#sobre-nosotros">Estudio</a>
+          <a href="#servicios">Servicios</a>
+          <a href="#testimonios">Historias</a>
+          <a href="#contacto">Contacto</a>
+        </nav>
+
+        <!-- Reserve btn -->
+        <div class="nav-reserve">
+          <button class="open-modal" data-product="" type="button">Reservar</button>
+        </div>
+
+        <!-- Cart btn -->
+        <button id="cart-btn" class="nav-cart" aria-label="Abrir carrito" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="8" cy="21" r="1" />
+            <circle cx="19" cy="21" r="1" />
+            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+          </svg>
+          <span id="cart-count" class="cart-count" hidden>0</span>
+        </button>
+
+        <!-- Hamburger -->
+        <button id="hamburger" class="nav-hamburger" aria-label="Abrir menú" aria-expanded="false"
+          aria-controls="mobile-drawer" type="button">
+          <span id="ham-icon"></span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div id="mobile-drawer" role="region" aria-label="Menú móvil">
+      <nav class="drawer-nav" aria-label="Navegación móvil">
+        <a href="#coleccion">Colección</a>
+        <a href="#sobre-nosotros">Estudio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#testimonios">Historias</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <div style="padding: 0 1.5rem 1rem;">
+        <button class="drawer-reserve open-modal" data-product="" type="button">Reservar</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════════════════════════════════════════
+       MODAL de contacto
+       ════════════════════════════════════════ -->
+  <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button id="modal-backdrop" class="modal-backdrop" aria-label="Cerrar" type="button"></button>
+    <div class="modal-box">
+      <button id="modal-close" class="modal-close" aria-label="Cerrar diálogo" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
+      </button>
+      <span class="gold-divider" aria-hidden="true"></span>
+      <h3 id="modal-title" class="modal-title">Hablemos en privado</h3>
+      <p class="modal-body">Para mantener cada pieza única y cuidada, gestionamos cada pedido de manera personal.
+        Contáctanos y te respondemos en menos de 24 horas con disponibilidad y entrega.</p>
+      <div class="modal-contacts">
+        <a href="https://wa.me/523334019364" class="modal-contact-link" target="_blank" rel="noreferrer">
+          <span class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.92 12 19.79 19.79 0 0 1 1.85 3.36a2 2 0 0 1 1.995-2.185l3 .001a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+          </span>
+          +52 33 3401 9364 · WhatsApp
+        </a>
+        <a href="mailto:hola@blanconarciso.mx" class="modal-contact-link">
+          <span class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="16" x="2" y="4" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+          </span>
+          hola@blanconarciso.mx
+        </a>
+      </div>
+      <p class="modal-hours">Atención de martes a sábado · 10:00 a 19:00</p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       CARRITO
+       ════════════════════════════════════════ -->
+  <div id="cart-overlay" aria-hidden="true"></div>
+  <aside id="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+    <div class="cart-head">
+      <h3 id="cart-title">Tu carrito</h3>
+      <button id="cart-close" aria-label="Cerrar carrito" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
+      </button>
+    </div>
+    <div id="cart-items" class="cart-items"></div>
+    <div class="cart-foot">
+      <p id="cart-error" class="cart-error" role="alert"></p>
+      <div class="cart-total-row">
+        <span>Total</span>
+        <strong id="cart-total">$0 MXN</strong>
+      </div>
+      <button id="cart-checkout" class="cart-checkout-btn" type="button">
+        Pagar con Mercado Pago
+      </button>
+      <p class="cart-note">Pago seguro procesado por Mercado Pago. Entrega en ZMG de Guadalajara.</p>
+    </div>
+  </aside>
+
+  <main>
+
+    <!-- ════════════════════════════════════════
+         HERO
+         ════════════════════════════════════════ -->
+    <section id="top" aria-label="Inicio">
+      <div class="hero-content">
+        <div class="hero-grid">
+          <div class="hero-text">
+            <span class="hero-eyebrow">
+              <span class="gold-divider" aria-hidden="true"></span>
+              Estudio Floral · Guadalajara, Jal.
+            </span>
+
+            <h1 class="hero-h1">
+              Aromas que se sienten, historias que hacen eco.
+            </h1>
+
+            <p class="hero-desc">
+              Diseño botánico hecho a mano. Cada arreglo en Blanco Narciso es una
+              pieza única, compuesta con flores de temporada y entregada en un
+              empaque sustentable, libre de plástico.
+            </p>
+
+            <div class="hero-cta">
+              <button class="btn-primary open-modal" data-product="" type="button">
+                Reservar un arreglo
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  aria-hidden="true">
+                  <path d="m7 7 10 10" />
+                  <path d="M17 7v10H7" />
+                </svg>
+              </button>
+              <a href="#coleccion" class="btn-outline-white">Ver colección</a>
+            </div>
+
+            <div class="hero-stats" aria-label="Datos del estudio">
+              <div>
+                <div class="stat-num">6 años</div>
+                <div class="stat-label">de arte floral</div>
+              </div>
+              <div>
+                <div class="stat-num">300+</div>
+                <div class="stat-label">Bodas y eventos</div>
+              </div>
+              <div>
+                <div class="stat-num">4 h</div>
+                <div class="stat-label">Entrega GDL &amp; ZMG</div>
+              </div>
+            </div>
+          </div>
+
+          <figure class="hero-polaroid">
+            <img src="img/principal.png" alt="Composición floral principal de Blanco Narciso"
+              fetchpriority="high">
+            <figcaption>Blanco Narciso</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <p class="hero-scroll" aria-hidden="true"></p>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         COLECCIÓN (renderizada por JS)
+         ════════════════════════════════════════ -->
+    <section id="coleccion" aria-labelledby="coleccion-title">
+      <div class="container">
+        <div class="reveal collection-header">
+          <div class="collection-header-left">
+            <span class="label">
+              <span class="gold-divider" aria-hidden="true"></span>
+              La colección de la semana
+            </span>
+            <h2 id="coleccion-title">Piezas únicas, en edición limitada, para que su aroma haga eco.</h2>
+          </div>
+          <p class="collection-header-right">
+            Cada pieza está disponible en cantidades limitadas y se entrega el
+            mismo día dentro de la Zona Metropolitana de Guadalajara. Reserva
+            con 24 horas de anticipación para piezas a medida.
+          </p>
+        </div>
+        <div id="collection-grid" class="collection-grid"></div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         SOBRE NOSOTROS
+         ════════════════════════════════════════ -->
+    <section id="sobre-nosotros" aria-labelledby="about-title">
+      <div class="container">
+        <div class="about-grid">
+
+          <div class="reveal about-img-col">
+            <div class="about-img">
+              <img src="img/servicios02.png" alt="Florista trabajando arreglo a mano en el estudio" loading="lazy">
+            </div>
+            <div class="about-badge" aria-hidden="true">
+              <span class="about-badge-num">6</span>
+              <span class="about-badge-label">Años creando eco</span>
+            </div>
+          </div>
+
+          <div class="reveal about-text-col" style="transition-delay:100ms">
+            <span class="label">
+              <span class="gold-divider" aria-hidden="true"></span>
+              El estudio
+            </span>
+            <h2 id="about-title">Un estudio floral pequeño, dedicado a piezas duraderas.</h2>
+            <div class="about-body">
+              <p>Blanco Narciso nació en 2020 en un pequeño estudio sobre avenida Vallarta. Empezamos componiendo ramos
+                para amistades cercanas y pequeñas bodas íntimas, y con el tiempo construimos una red de productores
+                locales que nos suministran flor recién cortada cada amanecer desde los Altos de Jalisco.</p>
+              <p>Hoy seguimos firmes en la misma idea: trabajar con cantidades pequeñas, conocer cada flor que entra al
+                taller y entregar piezas que cuenten algo. No producimos en serie; cada arreglo se compone a mano por
+                una sola florista.</p>
+              <p>Nos llamamos como la flor del mito: el narciso, cuyo nombre viene del griego <em>narkē</em> — aroma que
+                embriaga. Cuenta la historia que de Eco solo quedó la voz; de nuestras flores, queda su perfume. Por eso
+                trabajamos cada pieza para que el momento pase y su eco permanezca.</p>
+            </div>
+            <dl class="about-dl">
+              <div>
+                <dt>Origen</dt>
+                <dd>Productores locales de Jalisco</dd>
+              </div>
+              <div>
+                <dt>Estudio</dt>
+                <dd>Vallarta Nte. · Guadalajara</dd>
+              </div>
+              <div>
+                <dt>Estación</dt>
+                <dd>Composición rotando cada 14 días</dd>
+              </div>
+              <div>
+                <dt>Empaque</dt>
+                <dd>Materiales biodegradables · libre de plástico</dd>
+              </div>
+            </dl>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         SERVICIOS (renderizados por JS)
+         ════════════════════════════════════════ -->
+    <section id="servicios" aria-labelledby="servicios-title">
+      <div class="container">
+        <div class="reveal services-header">
+          <span class="label">
+            <span class="gold-divider" aria-hidden="true"></span>
+            Servicios
+            <span class="gold-divider" aria-hidden="true"></span>
+          </span>
+          <h2 id="servicios-title">Acompañamos rituales íntimos y celebraciones de gran escala con la misma atención.
+          </h2>
+          <p class="services-sub">Cada servicio se cotiza a la medida según fecha, alcance y estética. Escríbenos para
+            diseñar una propuesta personalizada.</p>
+        </div>
+        <div id="services-grid" class="services-grid"></div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         TESTIMONIOS (renderizados por JS)
+         ════════════════════════════════════════ -->
+    <section id="testimonios" aria-labelledby="testi-title">
+      <div class="container">
+        <div class="reveal testi-header">
+          <span class="label testi-header">
+            <span class="gold-divider" aria-hidden="true"></span>
+            Quienes nos eligen
+          </span>
+          <h2 id="testi-title">Historias contadas con flores.</h2>
+        </div>
+        <div id="testi-grid" class="testi-grid"></div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         CONTACTO
+         ════════════════════════════════════════ -->
+    <section id="contacto" aria-labelledby="contacto-title">
+      <div class="container">
+        <div class="contact-grid">
+
+          <!-- Formulario -->
+          <div class="reveal contact-form-area">
+            <span class="label">
+              <span class="gold-divider" aria-hidden="true"></span>
+              Contacto
+            </span>
+            <h2 id="contacto-title">Escríbenos y diseñamos algo juntos.</h2>
+            <p>Para reservas, bodas y suscripciones, cuéntanos un poco de la ocasión y te respondemos en menos de 24
+              horas con propuestas y referencias.</p>
+
+            <form id="contact-form" class="contact-form" novalidate aria-label="Formulario de contacto">
+              <div class="form-group">
+                <label for="form-name">Nombre</label>
+                <input id="form-name" name="name" type="text" autocomplete="name" aria-required="true">
+                <span id="error-name" class="form-error" role="alert"></span>
+              </div>
+              <div class="form-group">
+                <label for="form-email">Correo</label>
+                <input id="form-email" name="email" type="email" autocomplete="email" aria-required="true">
+                <span id="error-email" class="form-error" role="alert"></span>
+              </div>
+              <div class="form-group">
+                <label for="form-message">Mensaje</label>
+                <textarea id="form-message" name="message" rows="5" aria-required="true"></textarea>
+                <span id="error-message" class="form-error" role="alert"></span>
+              </div>
+              <button type="submit" class="btn-submit">
+                Enviar mensaje
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  aria-hidden="true">
+                  <path d="m22 2-7 20-4-9-9-4Z" />
+                  <path d="M22 2 11 13" />
+                </svg>
+              </button>
+            </form>
+
+            <div id="form-success" class="form-success" role="status" aria-live="polite">
+              <h3>Gracias por escribirnos, <span id="success-name"></span>.</h3>
+              <p>Hemos recibido tu mensaje. Una de nuestras floristas te responderá personalmente al correo <strong
+                  id="success-email"></strong> en las próximas horas hábiles.</p>
+              <button id="form-reset" class="btn-reset" type="button">Enviar otro mensaje →</button>
+            </div>
+          </div>
+
+          <!-- Aside con datos del local -->
+          <div class="reveal contact-aside" style="transition-delay:100ms">
+            <div class="aside-img">
+              <img src="img/estudio.png" alt="Fachada de Blanco Narciso · Estudio Floral en Av. Vallarta" loading="lazy">
+              <span class="aside-badge">Estudio Floral</span>
+            </div>
+            <div class="aside-body">
+              <span class="label">Visítanos</span>
+              <h3>Estudio Floral Vallarta</h3>
+              <p>Recibimos solo con cita previa. Reserva una sesión de consultoría floral para bodas y eventos.</p>
+
+              <ul class="aside-contacts" aria-label="Información de contacto">
+                <li>
+                  <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true">
+                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                  </span>
+                  <a href="https://maps.google.com/?q=Av.+Ignacio+L+Vallarta+3300,+Vallarta+Nte.,+44690+Guadalajara,+Jal."
+                    target="_blank" rel="noreferrer">
+                    Av. Ignacio L. Vallarta 3300<br>
+                    Vallarta Nte., 44690 Guadalajara, Jal.
+                  </a>
+                </li>
+                <li>
+                  <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true">
+                      <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.92 12 19.79 19.79 0 0 1 1.85 3.36a2 2 0 0 1 1.995-2.185l3 .001a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                  </span>
+                  <a href="tel:+523334019364">+52 33 3401 9364</a>
+                </li>
+                <li>
+                  <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true">
+                      <rect width="20" height="16" x="2" y="4" rx="2" />
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                  </span>
+                  <a href="mailto:hola@blanconarciso.mx">hola@blanconarciso.mx</a>
+                </li>
+              </ul>
+
+              <div class="aside-footer">
+                <p class="aside-hours">Horario · Mar a Sáb · 10:00 – 19:00</p>
+                <div class="aside-socials">
+                  <a href="https://www.instagram.com/blanconarcisomx/?hl=es" target="_blank" rel="noreferrer"
+                    class="social-btn" aria-label="Instagram de Blanco Narciso">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                    </svg>
+                  </a>
+                  <a href="https://wa.me/523334019364" target="_blank" rel="noreferrer" class="social-btn"
+                    aria-label="WhatsApp">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.92 12 19.79 19.79 0 0 1 1.85 3.36a2 2 0 0 1 1.995-2.185l3 .001a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                  </a>
+                  <a href="mailto:hola@blanconarciso.mx" class="social-btn" aria-label="Enviar correo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <rect width="20" height="16" x="2" y="4" rx="2" />
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════ -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-grid">
+
+          <!-- Brand -->
+          <div>
+            <div class="footer-brand-row">
+              <img src="img/logo-navy.png" alt="" width="48" height="48">
+              <span class="footer-brand-text">
+                <span class="footer-wordmark">Blanco <em>Narciso</em></span>
+                <span class="footer-tagline">Estudio Floral</span>
+              </span>
+            </div>
+            <p class="footer-desc">Estudio floral fundado en 2020. Composiciones a mano, flores de temporada y mucha
+              calma.<br><em>Aromas que se sienten, historias que hacen eco.</em></p>
+          </div>
+
+          <!-- Estudio -->
+          <div class="footer-col">
+            <h4>Estudio</h4>
+            <ul>
+              <li><a href="#coleccion">Colección</a></li>
+              <li><a href="#servicios">Servicios</a></li>
+              <li><a href="#servicios">Suscripción</a></li>
+              <li><a href="#testimonios">Historias</a></li>
+            </ul>
+          </div>
+
+          <!-- Visítanos -->
+          <div class="footer-col">
+            <h4>Visítanos</h4>
+            <ul>
+              <li><a href="#contacto">Vallarta Nte., Guadalajara</a></li>
+              <li><a href="#contacto">Mar a Sáb · 10–19h</a></li>
+              <li><a href="#contacto">Cita previa</a></li>
+            </ul>
+          </div>
+
+          <!-- Contacto -->
+          <div class="footer-col">
+            <h4>Contacto</h4>
+            <ul>
+              <li><a href="mailto:hola@blanconarciso.mx">hola@blanconarciso.mx</a></li>
+              <li><a href="tel:+523334019364">+52 33 3401 9364</a></li>
+              <li><span>Av. Ignacio L. Vallarta 3300, Vallarta Nte.<br>44690 Guadalajara, Jalisco</span></li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom">
+          <span>©
+            <script>document.write(new Date().getFullYear())</script> Blanco Narciso · Todos los derechos reservados
+          </span>
+          <span>Diseñado con calma en Guadalajara, Jalisco</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tarjeta de fidelidad · Blanco Narciso</title>
+<meta name="description" content="Tarjeta de fidelidad de Blanco Narciso. Cinco sellos, un nuevo arreglo.">
+<meta name="theme-color" content="#6f917e"><link rel="icon" href="/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/avoda" rel="stylesheet"><link href="https://fonts.cdnfonts.com/css/brittany-signature" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/fidelidad.css"><script src="/js/fidelidad.js" defer></script>
+</head>
+<body class="loyalty-page">
+<main class="loyalty-shell">
+<a href="/" class="back-link">← Volver al estudio</a>
+<h1>Tarjeta de fidelidad</h1>
+<p class="preview-label">Vista previa · tarjeta de muestra</p>
+<section class="registration" aria-labelledby="registration-title">
+<h2 id="registration-title">Tus próximos momentos empiezan aquí.</h2>
+<p>Completa tus datos para ver tu tarjeta personalizada.</p>
+<form id="registration-form">
+<label for="member-name">Nombre completo</label><input id="member-name" type="text" autocomplete="name" required minlength="2" maxlength="100" placeholder="Ej. Ana García">
+<label for="member-birth">Fecha de nacimiento</label><input id="member-birth" type="date" autocomplete="bday" required>
+<label for="member-phone">Teléfono</label><input id="member-phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="25" pattern="[+0-9() .-]{10,25}" placeholder="Ej. 33 1234 5678" aria-describedby="phone-hint"><span class="field-hint" id="phone-hint">Incluye la lada; puedes usar espacios y el prefijo +52.</span>
+<label for="member-email">Correo electrónico</label><input id="member-email" type="email" autocomplete="email" required maxlength="254" placeholder="Ej. ana@correo.com">
+<label class="consent"><input id="accept-terms" type="checkbox" required><span>He leído y acepto los <a href="#terms">términos y condiciones</a> del programa.</span></label>
+<p class="form-note">Prueba de registro: los datos solo se usan en esta pestaña para mostrar tu tarjeta. No se envían ni se guardan; se borran al recargar. Usa datos ficticios para probar.</p>
+<button class="register-button" type="submit">Ver mi tarjeta de muestra</button>
+<p id="registration-status" role="status" aria-live="polite"></p>
+</form></section>
+<article id="card-preview" tabindex="-1" class="flower-pass" aria-label="Tarjeta de fidelidad de muestra">
+<header class="pass-brand"><img src="/img/logo-white.png" alt="" width="54" height="54"><div><span class="wordmark">Blanco <em>Narciso</em></span><span class="brand-caption">ESTUDIO FLORAL</span></div></header>
+<p class="pass-title">Cada compra,<br><em>un nuevo florecer.</em></p>
+<div class="points-heading"><span>PUNTOS ACUMULADOS</span><span><strong id="point-count">1,000</strong> / 2,500</span></div>
+<progress value="1000" max="2500" aria-label="Puntos acumulados de un máximo de 2,500">1,000 de 2,500</progress>
+<div id="stamps" class="stamps" aria-label="Dos de cinco sellos obtenidos"></div>
+<div class="pass-progress"><span><strong>2 de 5</strong> sellos</span><span>Faltan 3 sellos</span></div>
+<div class="barcode-panel"><img class="barcode-brand" src="/img/logo-navy.png" alt="Blanco Narciso" width="36" height="36"><svg id="member-barcode" role="img" aria-label="Código de barras de muestra del miembro 0000000001" preserveAspectRatio="xMidYMid meet"></svg><p>0000000001</p></div>
+<div class="pass-member"><div><span>NOMBRE</span><strong id="card-member-name">Cliente de muestra</strong></div><div><span>RECOMPENSAS</span><strong>0 disponibles</strong></div></div>
+</article>
+<section class="purchase-summary" aria-label="Resumen de compras"><dl><div><dt>ID de miembro</dt><dd>0000000001</dd></div><div><dt>Compras acumuladas</dt><dd>$1,000 MXN · muestra</dd></div><div><dt>Para la siguiente recompensa</dt><dd>3 sellos</dd></div><div><dt>Premio</dt><dd>Arreglo mediano o su equivalente</dd></div></dl></section>
+<section class="wallet-actions" aria-label="Guardar tarjeta"><button type="button" disabled>Guardar en Apple Wallet</button><button type="button" disabled>Guardar en Google Wallet</button><p>Descarga pendiente de activar. Esta muestra no es un pase de Wallet ni permite canjear premios.</p></section>
+<section class="terms" id="terms"><details><summary>Términos y condiciones</summary><div class="terms-body"><p><strong>Acumulación.</strong> Cada $1 MXN de compras elegibles pagadas equivale a 1 punto. Cada 500 puntos completa un sello. Al reunir 2,500 puntos se completan los cinco sellos necesarios para el canje.</p><p><strong>Canje de recompensa.</strong> Al conseguir los cinco sellos, podrás canjearlos por un arreglo mediano o por otro arreglo de valor equivalente al precio del arreglo mediano vigente el día del canje.</p><p>La tarjeta y la recompensa son personales e intransferibles. El beneficio no es acumulable con otras promociones, descuentos o cupones. No es canjeable por dinero en efectivo.</p><p>El canje está sujeto a disponibilidad de flores y arreglos. Cada recompensa puede utilizarse una sola vez; el personal deberá validar y registrar el canje. Los cinco sellos utilizados se descuentan al entregar la recompensa.</p><p>Solo se acreditan compras pagadas y verificadas por el estudio. Los pedidos cancelados o reembolsados no generan beneficios. El envío no forma parte del valor del arreglo de recompensa.</p><p class="pending-terms">Pendiente de definir antes de activar: vigencia de la tarjeta y recompensa, tratamiento de diferencias de precio y de compras que superen los 2,500 puntos. Meta de canje: 2,500 puntos.</p></div></details></section>
+<p class="closing-line">Aromas que se sienten, historias que hacen eco.</p>
+</main>
+</body></html>

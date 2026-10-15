@@ -171,3 +171,8 @@ Los siguientes headers se aplican en producción mediante los archivos de config
 ## Licencia
 
 [MIT](LICENSE) © 2026 Blanco Narciso
+
+
+## Versión local Node/Express y fidelidad
+
+La versión HTML/CSS/JavaScript del estudio y su prototipo de registro Wallet están en [`estudio-node/`](estudio-node/README.md). La web Next.js de la raíz se conserva. El backend Express requiere alojamiento Node y no funciona en GitHub Pages. El logo público para configurar Google Wallet es https://alastor-4dev.github.io/blanco-narciso/img/logo-navy.png.

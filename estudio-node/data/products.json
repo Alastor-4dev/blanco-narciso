@@ -1,0 +1,80 @@
+[
+  {
+    "id": "composicion-boutique",
+    "name": "Composición Boutique",
+    "tagline": "Edición de la casa",
+    "desc": "Pieza compuesta a mano con flor de temporada en jarrón de cerámica. Selección que rota cada semana.",
+    "img": "img/ramo01.png",
+    "enabled": false,
+    "prices": {
+      "chico": 890,
+      "mediano": 1390,
+      "grande": 1890
+    }
+  },
+  {
+    "id": "brazada-de-temporada",
+    "name": "Brazada de Temporada",
+    "tagline": "Botón de estación",
+    "desc": "Brazada generosa con flor recién cortada del campo, envuelta a mano en papel para regalo inmediato.",
+    "img": "img/ramo02.png",
+    "enabled": true,
+    "prices": {
+      "chico": 690,
+      "mediano": 990,
+      "grande": 1290
+    }
+  },
+  {
+    "id": "composicion-silvestre",
+    "name": "Composición Silvestre",
+    "tagline": "Estilo libre",
+    "desc": "Arreglo con movimiento, mezcla de follaje y flor variada. Atado a mano con cinta de seda cruda.",
+    "img": "img/ramo03.png",
+    "enabled": true,
+    "prices": {
+      "chico": 790,
+      "mediano": 1090,
+      "grande": 1490
+    }
+  },
+  {
+    "id": "edicion-de-temporada",
+    "name": "Edición de Temporada",
+    "tagline": "Edición limitada",
+    "desc": "Composición escultural en cantidad reducida. Diseñada para piezas de regalo o espacios especiales.",
+    "img": "img/ramo04.png",
+    "enabled": true,
+    "prices": {
+      "chico": 990,
+      "mediano": 1450,
+      "grande": 1990
+    }
+  },
+  {
+    "id": "ramos",
+    "name": "Ramos",
+    "tagline": "Regalo íntimo",
+    "desc": "Ramillete envuelto en papel francés, ideal para enviar a domicilio o regalar a la mano.",
+    "img": "img/recomendaciones.png",
+    "enabled": true,
+    "prices": {
+      "chico": 150,
+      "mediano": 350,
+      "grande": 550
+    }
+  },
+  {
+    "id": "bridal",
+    "name": "Bridal",
+    "tagline": "Ramos de novia",
+    "desc": "El ramo que te acompaña al altar. Compuesto a mano con flor de temporada, en armonía con tu vestido y la luz de tu ceremonia.",
+    "img": "img/bridal.png",
+    "enabled": true,
+    "prices": {
+      "chico": 1890,
+      "mediano": 2590,
+      "grande": 3490
+    }
+  }
+]

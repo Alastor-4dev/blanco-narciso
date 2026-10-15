@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel · Blanco Narciso</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/avoda" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/brittany-signature" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1a2b4a; --navy-soft: #2f4d7a; --ice: #eef2f8;
+      --cloud: #f7f9fc; --gold: #c9a96a; --gold-soft: #d9bf8a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--cloud); color: var(--navy); line-height: 1.5; }
+    button { cursor: pointer; font-family: inherit; }
+    input, textarea { font-family: inherit; }
+
+    .topbar { background: var(--navy); color: white; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .topbar h1 { font-family: 'Avoda', 'Cormorant Garamond', serif; font-weight: 400; font-size: 1.4rem; letter-spacing: .04em; }
+    .topbar h1 em { font-family: 'Brittany Signature', 'Cormorant Garamond', cursive; font-style: normal; font-size: 1.15em; color: var(--gold-soft); }
+    .topbar .tag { font-size: .65rem; text-transform: uppercase; letter-spacing: .3em; color: var(--gold-soft); display: block; }
+    .btn-logout { background: none; border: 1px solid rgba(255,255,255,.3); color: white; padding: .4rem .9rem; border-radius: .125rem; font-size: .8rem; }
+    .btn-logout:hover { background: rgba(255,255,255,.1); }
+
+    .wrap { max-width: 64rem; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+    /* Login */
+    #login-view { max-width: 22rem; margin: 6rem auto; background: white; padding: 2.5rem 2rem; border: 1px solid var(--ice); text-align: center; }
+    #login-view h2 { font-family: 'Avoda', 'Cormorant Garamond', serif; font-weight: 400; margin-bottom: 1.5rem; letter-spacing: .04em; }
+    #login-view h2 em { font-family: 'Brittany Signature', 'Cormorant Garamond', cursive; font-style: normal; font-size: 1.15em; }
+    #login-view input { width: 100%; padding: .7rem .9rem; border: 1px solid #d6deeb; border-radius: .125rem; margin-bottom: 1rem; font-size: .95rem; }
+    #login-error { color: #b3261e; font-size: .8rem; margin-bottom: .75rem; min-height: 1.1em; }
+
+    .btn-primary { background: var(--navy); color: white; border: none; padding: .7rem 1.4rem; border-radius: .125rem; font-size: .85rem; font-weight: 500; }
+    .btn-primary:hover { background: var(--navy-soft); }
+    .btn-gold { background: var(--gold); color: white; border: none; padding: .7rem 1.4rem; border-radius: .125rem; font-size: .85rem; font-weight: 500; }
+    .btn-gold:hover { background: var(--gold-soft); }
+    .btn-ghost { background: none; border: 1px solid #d6deeb; color: var(--navy); padding: .45rem .9rem; border-radius: .125rem; font-size: .8rem; }
+    .btn-ghost:hover { border-color: var(--navy); }
+    .btn-danger { background: none; border: 1px solid #e7c4c1; color: #b3261e; padding: .45rem .9rem; border-radius: .125rem; font-size: .8rem; }
+    .btn-danger:hover { background: #fdf3f2; }
+
+    /* Header productos */
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .panel-head h2 { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 1.8rem; }
+    .panel-head p { font-size: .85rem; color: var(--navy-soft); }
+
+    /* Cards de producto */
+    .product-card { background: white; border: 1px solid var(--ice); margin-bottom: 1rem; padding: 1.25rem; display: grid; grid-template-columns: 72px 1fr auto; gap: 1.25rem; align-items: start; }
+    .product-card.disabled { opacity: .55; }
+    .product-card img { width: 72px; height: 90px; object-fit: cover; background: var(--ice); }
+    .p-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; }
+    .p-tagline { font-size: .65rem; text-transform: uppercase; letter-spacing: .25em; color: var(--gold); }
+    .p-desc { font-size: .82rem; color: var(--navy-soft); margin: .35rem 0 .6rem; }
+    .p-prices { display: flex; gap: 1rem; font-size: .8rem; flex-wrap: wrap; }
+    .p-prices span b { font-weight: 600; }
+    .p-actions { display: flex; flex-direction: column; gap: .5rem; align-items: flex-end; }
+
+    /* Switch habilitado */
+    .switch { position: relative; display: inline-flex; align-items: center; gap: .5rem; font-size: .75rem; cursor: pointer; user-select: none; }
+    .switch input { display: none; }
+    .switch .track { width: 38px; height: 21px; background: #cdd6e4; border-radius: 999px; position: relative; transition: background .2s; flex-shrink: 0; }
+    .switch .track::after { content: ''; position: absolute; top: 2.5px; left: 3px; width: 16px; height: 16px; background: white; border-radius: 50%; transition: transform .2s; }
+    .switch input:checked + .track { background: var(--gold); }
+    .switch input:checked + .track::after { transform: translateX(16px); }
+
+    /* Formulario editar/agregar */
+    .editor { background: white; border: 1px solid var(--gold-soft); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .editor h3 { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 1.4rem; margin-bottom: 1rem; }
+    .field { margin-bottom: .9rem; }
+    .field label { display: block; font-size: .7rem; text-transform: uppercase; letter-spacing: .15em; color: var(--navy-soft); margin-bottom: .3rem; }
+    .field input, .field textarea { width: 100%; padding: .55rem .75rem; border: 1px solid #d6deeb; border-radius: .125rem; font-size: .9rem; }
+    .field textarea { resize: vertical; min-height: 4rem; }
+    .row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; }
+    .editor-actions { display: flex; gap: .75rem; margin-top: 1rem; }
+
+    .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--navy); color: white; padding: .7rem 1.4rem; border-radius: .25rem; font-size: .85rem; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 99; }
+    .toast.show { opacity: 1; }
+
+    @media (max-width: 640px) {
+      .product-card { grid-template-columns: 1fr; }
+      .p-actions { flex-direction: row; align-items: center; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div id="login-view">
+    <h2>Blanco <em>Narciso</em> · Panel</h2>
+    <p id="login-error"></p>
+    <input id="login-pass" type="password" placeholder="Contraseña" autocomplete="current-password">
+    <button id="login-btn" class="btn-primary" style="width:100%">Entrar</button>
+  </div>
+
+  <!-- PANEL -->
+  <div id="panel-view" style="display:none">
+    <div class="topbar">
+      <h1>Blanco <em>Narciso</em><span class="tag">Panel de productos</span></h1>
+      <div style="display:flex; gap:.75rem">
+        <a href="index.html" class="btn-logout" style="text-decoration:none; display:inline-flex; align-items:center">Ver tienda</a>
+        <button id="logout-btn" class="btn-logout">Salir</button>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="panel-head">
+        <div>
+          <h2>Tus arreglos</h2>
+          <p>Activa o desactiva productos según tu rotación semanal. Los desactivados no aparecen en la tienda.</p>
+        </div>
+        <button id="add-btn" class="btn-gold">+ Agregar arreglo</button>
+      </div>
+
+      <div id="editor-slot"></div>
+      <div id="product-list"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+  'use strict';
+  let token = sessionStorage.getItem('bn_token') || '';
+  let products = [];
+
+  const $ = id => document.getElementById(id);
+  const fmt = n => '$' + Number(n).toLocaleString('es-MX') + ' MXN';
+
+  // Escapa HTML para prevenir XSS al mostrar datos de productos
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  function toast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  async function api(path, opts = {}) {
+    const res = await fetch(path, {
+      ...opts,
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, ...(opts.headers || {}) }
+    });
+    if (res.status === 401) { logout(); throw new Error('Sesión expirada'); }
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error');
+    return data;
+  }
+
+  /* ── Login ── */
+  async function login() {
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: $('login-pass').value })
+      });
+      const data = await res.json();
+      if (!res.ok) { $('login-error').textContent = data.error; return; }
+      token = data.token;
+      sessionStorage.setItem('bn_token', token);
+      showPanel();
+    } catch { $('login-error').textContent = 'No se pudo conectar al servidor'; }
+  }
+
+  function logout() {
+    token = '';
+    sessionStorage.removeItem('bn_token');
+    $('panel-view').style.display = 'none';
+    $('login-view').style.display = '';
+  }
+
+  async function showPanel() {
+    $('login-view').style.display = 'none';
+    $('panel-view').style.display = '';
+    await loadProducts();
+  }
+
+  /* ── Productos ── */
+  async function loadProducts() {
+    products = await api('/api/admin/products');
+    renderList();
+  }
+
+  function renderList() {
+    $('product-list').innerHTML = products.map(p => `
+      <div class="product-card ${p.enabled ? '' : 'disabled'}" data-id="${esc(p.id)}">
+        <img src="${esc(p.img)}" alt="">
+        <div>
+          <span class="p-tagline">${esc(p.tagline)}</span>
+          <div class="p-name">${esc(p.name)}</div>
+          <p class="p-desc">${esc(p.desc)}</p>
+          <div class="p-prices">
+            <span>Chico <b>${fmt(p.prices.chico)}</b></span>
+            <span>Mediano <b>${fmt(p.prices.mediano)}</b></span>
+            <span>Grande <b>${fmt(p.prices.grande)}</b></span>
+          </div>
+        </div>
+        <div class="p-actions">
+          <label class="switch">
+            <input type="checkbox" ${p.enabled ? 'checked' : ''} onchange="toggleProduct('${esc(p.id)}', this.checked)">
+            <span class="track"></span>
+            ${p.enabled ? 'Disponible' : 'Oculto'}
+          </label>
+          <button class="btn-ghost" onclick="openEditor('${esc(p.id)}')">Editar</button>
+          <button class="btn-danger" onclick="removeProduct('${esc(p.id)}')">Eliminar</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.toggleProduct = async (id, enabled) => {
+    try {
+      await api('/api/admin/products/' + id, { method: 'PUT', body: JSON.stringify({ enabled }) });
+      const p = products.find(x => x.id === id);
+      p.enabled = enabled;
+      renderList();
+      toast(enabled ? 'Producto visible en la tienda' : 'Producto oculto de la tienda');
+    } catch (e) { toast(e.message); }
+  };
+
+  window.removeProduct = async (id) => {
+    const p = products.find(x => x.id === id);
+    if (!confirm(`¿Eliminar "${p.name}" definitivamente?\nSi solo quieres ocultarlo, usa el interruptor.`)) return;
+    try {
+      await api('/api/admin/products/' + id, { method: 'DELETE' });
+      await loadProducts();
+      toast('Producto eliminado');
+    } catch (e) { toast(e.message); }
+  };
+
+  /* ── Editor (agregar / editar) ── */
+  window.openEditor = (id) => {
+    const p = id ? products.find(x => x.id === id) : null;
+    $('editor-slot').innerHTML = `
+      <div class="editor">
+        <h3>${p ? 'Editar: ' + esc(p.name) : 'Nuevo arreglo'}</h3>
+        <div class="field"><label>Nombre</label><input id="f-name" value="${p ? esc(p.name) : ''}"></div>
+        <div class="field"><label>Etiqueta (ej. Edición limitada)</label><input id="f-tagline" value="${p ? esc(p.tagline) : ''}"></div>
+        <div class="field"><label>Descripción</label><textarea id="f-desc">${p ? esc(p.desc) : ''}</textarea></div>
+        <div class="field"><label>Imagen (ruta, ej. img/ramo01.png)</label><input id="f-img" value="${p ? esc(p.img) : 'img/ramo01.png'}"></div>
+        <div class="row-3">
+          <div class="field"><label>Precio chico (MXN)</label><input id="f-chico" type="number" min="0" value="${p ? p.prices.chico : ''}"></div>
+          <div class="field"><label>Precio mediano (MXN)</label><input id="f-mediano" type="number" min="0" value="${p ? p.prices.mediano : ''}"></div>
+          <div class="field"><label>Precio grande (MXN)</label><input id="f-grande" type="number" min="0" value="${p ? p.prices.grande : ''}"></div>
+        </div>
+        <div class="editor-actions">
+          <button class="btn-primary" onclick="saveEditor('${id || ''}')">Guardar</button>
+          <button class="btn-ghost" onclick="closeEditor()">Cancelar</button>
+        </div>
+      </div>`;
+    $('editor-slot').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  window.closeEditor = () => { $('editor-slot').innerHTML = ''; };
+
+  window.saveEditor = async (id) => {
+    const body = {
+      name: $('f-name').value.trim(),
+      tagline: $('f-tagline').value.trim(),
+      desc: $('f-desc').value.trim(),
+      img: $('f-img').value.trim(),
+      prices: { chico: $('f-chico').value, mediano: $('f-mediano').value, grande: $('f-grande').value }
+    };
+    if (!body.name) { toast('Falta el nombre'); return; }
+    try {
+      if (id) await api('/api/admin/products/' + id, { method: 'PUT', body: JSON.stringify(body) });
+      else await api('/api/admin/products', { method: 'POST', body: JSON.stringify(body) });
+      closeEditor();
+      await loadProducts();
+      toast('Guardado');
+    } catch (e) { toast(e.message); }
+  };
+
+  /* ── Boot ── */
+  $('login-btn').addEventListener('click', login);
+  $('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+  $('logout-btn').addEventListener('click', logout);
+  $('add-btn').addEventListener('click', () => openEditor(''));
+
+  if (token) {
+    showPanel().catch(logout);
+  }
+  </script>
+</body>
+</html>

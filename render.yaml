@@ -1,0 +1,22 @@
+# Configuración inicial para desplegar explícitamente desde Render.
+# No se crea ni contrata un servicio al subir este archivo a GitHub.
+services:
+  - type: web
+    name: blanco-narciso-estudio
+    runtime: node
+    rootDir: estudio-node
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/products
+    autoDeployTrigger: off
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 22
+      - key: ADMIN_PASSWORD
+        generateValue: true
+      - key: BASE_URL
+        sync: false
+      - key: MP_ACCESS_TOKEN
+        sync: false
