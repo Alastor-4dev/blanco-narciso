@@ -43,7 +43,7 @@ async function preparePilot(wallet = new GoogleWallet()) {
   try {cls = await wallet.request('loyaltyclass/'+classId);} catch(e) {
     if(e.status!==404) throw e;
     cls = await wallet.request('loyaltyclass',{method:'POST',body:{
-      id:classId,issuerName:'Blanco Narciso',programName:'Fidelidad Narciso · Prueba',
+      id:classId,issuerName:'Blanco Narciso',programName:'Flores que vuelven',
       programLogo:original.programLogo,hexBackgroundColor:original.hexBackgroundColor || '#6f917e',
       accountNameLabel:'Nombre',accountIdLabel:'ID de miembro',reviewStatus:'UNDER_REVIEW',
       countryCode:'MX',multipleDevicesAndHoldersAllowedStatus:'ONE_USER_ALL_DEVICES',
