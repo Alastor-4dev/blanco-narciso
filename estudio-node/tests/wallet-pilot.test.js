@@ -22,3 +22,21 @@ test('Purchases survive sync failure, reject duplicates, and serialize concurren
  }finally{if(old===undefined)delete process.env.WALLET_PILOT_LEDGER;else process.env.WALLET_PILOT_LEDGER=old;fs.rmSync(dir,{recursive:true,force:true});}
 });
 test('Five stamp boundary and reward math',()=>{assert.deepEqual(balance(250000),{points:2500,stamps:5,remaining:0,nextStamp:0,rewards:1});assert.equal(balance(49999).stamps,0);assert.equal(balance(50000).stamps,1);assert.equal(balance(120000).remaining,1300)});
+test('Different people receive separate cards, balances and identifiers',async()=>{
+ const {createCard,listCards,ledgerForCard}=require('../lib/wallet-pilot');
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'bn-cards-'));
+ const before={privateDir:process.env.WALLET_PRIVATE_DIR,config:process.env.GOOGLE_WALLET_CONFIG};
+ process.env.WALLET_PRIVATE_DIR=dir;process.env.GOOGLE_WALLET_CONFIG=path.join(dir,'google-wallet.json');
+ try{
+  writePrivate(process.env.GOOGLE_WALLET_CONFIG,{issuerId:'123',pilotClassId:'123.class',pilotObjectId:'123.original'});
+  const fake={request:async(resource,{body})=>body};
+  const a=await createCard(fake,'Prueba A');const b=await createCard(fake,'Prueba B');
+  assert.notEqual(a.objectId,b.objectId);assert.notEqual(a.accountId,b.accountId);assert.equal(listCards().length,3);
+  const first=new WalletPilot(fake,{ledgerFile:ledgerForCard(a.objectId)});const second=new WalletPilot(fake,{ledgerFile:ledgerForCard(b.objectId)});
+  await first.purchase('500','TICKET-001');assert.equal(first.summary().points,500);assert.equal(second.summary().points,0);
+  assert.throws(()=>ledgerForCard('../../sensitive'),e=>e.status===404);
+ }finally{
+  for(const [key,value] of [['WALLET_PRIVATE_DIR',before.privateDir],['GOOGLE_WALLET_CONFIG',before.config]]){if(value===undefined)delete process.env[key];else process.env[key]=value;}
+  fs.rmSync(dir,{recursive:true,force:true});
+ }
+});

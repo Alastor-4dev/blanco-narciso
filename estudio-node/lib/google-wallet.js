@@ -6,7 +6,7 @@ const crypto = require('node:crypto');
 const API = 'https://walletobjects.googleapis.com/walletobjects/v1/';
 const OAUTH = 'https://oauth2.googleapis.com/token';
 const SCOPE = 'https://www.googleapis.com/auth/wallet_object.issuer';
-const privateDirectory = () => path.join(os.homedir(), '.config', 'blanco-narciso');
+const privateDirectory = () => process.env.WALLET_PRIVATE_DIR || path.join(os.homedir(), '.config', 'blanco-narciso');
 function readConfig() {
   const file = process.env.GOOGLE_WALLET_CONFIG || path.join(privateDirectory(), 'google-wallet.json');
   return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : {};
@@ -26,9 +26,9 @@ class GoogleWallet {
     if (key.type !== 'service_account' || !key.client_email || !key.private_key) throw new WalletError(503, 'Credencial de servicio no válida.');
     return key;
   }
-  sign(payload) {
+  sign(payload, includeKeyId=true) {
     const key = this.credentials();
-    const header = Buffer.from(JSON.stringify({alg:'RS256',typ:'JWT',kid:key.private_key_id})).toString('base64url');
+    const header = Buffer.from(JSON.stringify({alg:'RS256',typ:'JWT',...(includeKeyId ? {kid:key.private_key_id} : {})})).toString('base64url');
     const body = Buffer.from(JSON.stringify(payload)).toString('base64url');
     const input = `${header}.${body}`;
     return `${input}.${crypto.sign('RSA-SHA256', Buffer.from(input), key.private_key).toString('base64url')}`;
@@ -55,7 +55,7 @@ class GoogleWallet {
   }
   saveUrl(objectId, origins, classId) {
     const now = Math.floor(this.clock()/1000);
-    const jwt = this.sign({iss:this.credentials().client_email,aud:'google',typ:'savetowallet',iat:now,origins,payload:{loyaltyObjects:[{id:objectId,...(classId ? {classId} : {})}]}});
+    const jwt = this.sign({iss:this.credentials().client_email,aud:'google',typ:'savetowallet',iat:now,origins,payload:{loyaltyObjects:[{id:objectId,...(classId ? {classId} : {})}]}},false);
     return 'https://pay.google.com/gp/v/save/' + jwt;
   }
 }

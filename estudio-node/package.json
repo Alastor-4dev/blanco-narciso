@@ -1,7 +1,7 @@
 {
   "name": "blanco-narciso",
   "version": "1.0.0",
-  "description": "E-commerce Blanco Narciso \u00b7 Estudio Floral",
+  "description": "E-commerce Blanco Narciso · Estudio Floral",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -13,7 +13,12 @@
     "node": ">=18"
   },
   "dependencies": {
+    "bwip-js": "^4.11.4",
     "express": "^4.19.2",
     "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "jsqr": "^1.4.0",
+    "pngjs": "^7.0.0"
   }
 }

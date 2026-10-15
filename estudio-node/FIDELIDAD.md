@@ -112,3 +112,13 @@ Para mostrador basta un teléfono/tableta/computadora con internet y acceso al p
 - Apple, certificados de pases: https://developer.apple.com/wallet/get-started/
 - Apple, actualizaciones: https://developer.apple.com/documentation/WalletPasses/adding-a-web-service-to-update-passes
 - Apple Developer Program y costo: https://developer.apple.com/programs/
+
+## Revisión visual y pruebas en otros teléfonos
+
+El usuario confirmó que pudo guardar la tarjeta en Google Wallet con su cuenta administradora. Otras cuentas recibieron restricciones de autorización. El emisor requiere cuentas de prueba en modo demo y acceso de publicación aprobado para uso público. Además, cada pase es personal (`ONE_USER_ALL_DEVICES`): no reutilizar la tarjeta ya guardada por una persona para otro usuario.
+
+El piloto ahora muestra la identidad del sitio: verde salvia con trama, marco blanco, Avoda, Brittany Signature y Cormorant, y cinco sellos con el logo original. La tarjeta visual se alimenta del saldo del registro local. Google Wallet usa tipografía y distribución nativas para sus campos; las imágenes de marca conservan la tipografía y los sellos del estudio. Se prepararon un logo de 660 px, un logotipo horizontal transparente y seis imágenes de sellos, de cero a cinco, para alojar públicamente.
+
+El QR incorpora el narciso en el centro con corrección de errores Q, zona de silencio y botón para ampliarlo. Conserva estructura QR estándar para que se pueda leer: no se recorta la matriz con la silueta completa de la flor. El QR de cada tarjeta sigue siendo un enlace de guardado individual, no el formulario público de registro.
+
+El selector permite crear otra tarjeta de prueba con alias ficticio. Cada tarjeta tiene su propio identificador, código de barras, registro y saldo. Los nuevos correos deben agregarse a las cuentas de prueba desde Wallet Console antes de usarlos; no es necesario otorgarles administración del negocio. La cuenta debe completar su perfil empresarial y solicitar el acceso de publicación antes del lanzamiento. La aprobación de una clase no equivale a aprobación pública del emisor.
