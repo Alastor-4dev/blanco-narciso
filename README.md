@@ -176,3 +176,8 @@ Los siguientes headers se aplican en producción mediante los archivos de config
 ## Versión local Node/Express y fidelidad
 
 La versión HTML/CSS/JavaScript del estudio y su prototipo de registro Wallet están en [`estudio-node/`](estudio-node/README.md). La web Next.js de la raíz se conserva. El backend Express requiere alojamiento Node y no funciona en GitHub Pages. El logo público para configurar Google Wallet es https://alastor-4dev.github.io/blanco-narciso/img/logo-navy.png.
+
+
+## Vista pública del diseño actual
+
+GitHub Pages publica ahora la exportación de `estudio-node/` generada por `scripts/build-pages-preview.py`: fondo verde texturizado y fotografía en marco blanco, conforme al diseño local. Es una vista previa sin ventas, envíos de formularios ni registro real. Conserva la muestra local de fidelidad en `/fidelidad/`. La aplicación completa requiere hosting Node; `src/` conserva la versión Next.js anterior. El directorio `out/` se regenera y no debe editarse.

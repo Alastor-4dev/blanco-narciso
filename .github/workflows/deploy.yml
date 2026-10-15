@@ -23,17 +23,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
+      - name: Export current design preview
+        run: python3 scripts/build-pages-preview.py
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
