@@ -40,3 +40,17 @@ test('Different people receive separate cards, balances and identifiers',async()
   fs.rmSync(dir,{recursive:true,force:true});
  }
 });
+test('A point update preserves the member birth date in the ledger and the Wallet payload',async()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'bn-birthday-'));
+ try{
+  const file=path.join(dir,'ledger.json');
+  writePrivate(file,{objectId:'123.member',accountName:'Miembro',birthDate:'2004-02-29',cents:0,events:[],syncStatus:'synced'});
+  let payload;
+  const pilot=new WalletPilot({request:async(resource,{body})=>{payload=body;return{};}},{ledgerFile:file});
+  await pilot.purchase('500','TICKET-001');
+  assert.equal(pilot.summary().birthDate,'2004-02-29');
+  assert.equal(payload.textModulesData.find(m=>m.id==='nacimiento').body,'29 de febrero de 2004');
+  assert.equal(payload.loyaltyPoints.balance.double,500);
+  assert.equal(JSON.parse(fs.readFileSync(file,'utf8')).birthDate,'2004-02-29');
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

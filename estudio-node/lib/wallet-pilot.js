@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {GoogleWallet,readConfig,privateDirectory,WalletError} = require('./google-wallet');
 const crypto = require('node:crypto');
-const {classDesign}=require('./wallet-design');
+const {classDesign,birthDateLabel}=require('./wallet-design');
 const files = {
   config: () => process.env.GOOGLE_WALLET_CONFIG || path.join(privateDirectory(),'google-wallet.json'),
   ledger: () => process.env.WALLET_PILOT_LEDGER || path.join(privateDirectory(),'wallet-pilot-ledger.json')
@@ -19,15 +19,14 @@ function balance(cents) {
   const stamps = Math.min(5,Math.floor(points / 500));
   return {points,stamps,remaining:Math.max(0,2500-points),nextStamp:stamps===5?0:500-points%500,rewards:points>=2500?1:0};
 }
-function objectFields(cents) {
+function objectFields(cents,profile={}) {
   const b = balance(cents);
   return {
-    loyaltyPoints:{label:'Puntos',balance:{double:b.points}},
+    loyaltyPoints:{label:'Puntos acumulados',balance:{double:b.points}},
     secondaryLoyaltyPoints:{label:'Sellos',balance:{string:`${b.stamps} de 5`}},
     heroImage:{sourceUri:{uri:`https://alastor-4dev.github.io/blanco-narciso/img/wallet-sellos-v2-${b.stamps}.png`},contentDescription:{defaultValue:{language:'es-419',value:`${b.stamps} de cinco sellos de Blanco Narciso`}}},
     textModulesData:[
-      {id:'compras',header:'Compras acumuladas',body:`$${b.points.toFixed(2)} MXN`},
-      {id:'faltante',header:'Para tu recompensa',body:b.remaining===0?'Cinco sellos completos. Tu recompensa está disponible.':`${b.remaining.toLocaleString('es-MX')} puntos pendientes de 2,500.`},
+      {id:'nacimiento',header:'Tu primer florecer',body:birthDateLabel(profile.birthDate)},
       {id:'premios',header:'Recompensas',body:`${b.rewards} disponibles`}
     ]
   };
@@ -44,7 +43,7 @@ async function preparePilot(wallet = new GoogleWallet()) {
     if(e.status!==404) throw e;
     cls = await wallet.request('loyaltyclass',{method:'POST',body:{
       id:classId,issuerName:'Blanco Narciso',...classDesign(),
-      accountNameLabel:'Nombre',accountIdLabel:'ID de miembro',reviewStatus:'UNDER_REVIEW',
+      accountNameLabel:'Nombre',accountIdLabel:'ID de florista',reviewStatus:'UNDER_REVIEW',
       countryCode:'MX',multipleDevicesAndHoldersAllowedStatus:'ONE_USER_ALL_DEVICES',
       homepageUri:{uri:'https://alastor-4dev.github.io/blanco-narciso/',description:'Blanco Narciso'}
     }});
@@ -67,12 +66,12 @@ class WalletPilot {
   }
   summary() {
     const data=this.ledger();
-    return {objectId:data.objectId,accountName:data.accountName || 'Cliente',accountId:data.accountId || 'BNTEST0001',...balance(data.cents),syncStatus:data.syncStatus,events:data.events};
+    return {objectId:data.objectId,accountName:data.accountName || 'Cliente',accountId:data.accountId || 'BNTEST0001',birthDate:data.birthDate || null,...balance(data.cents),syncStatus:data.syncStatus,events:data.events};
   }
   async synchronize() {
     const data=this.ledger();
     try {
-      await this.wallet.request('loyaltyobject/'+data.objectId,{method:'PATCH',body:objectFields(data.cents)});
+      await this.wallet.request('loyaltyobject/'+data.objectId,{method:'PATCH',body:objectFields(data.cents,data)});
       data.syncStatus='synced';
     } catch(e) {data.syncStatus='pending';writePrivate(this.ledgerFile,data);throw e;}
     writePrivate(this.ledgerFile,data);
