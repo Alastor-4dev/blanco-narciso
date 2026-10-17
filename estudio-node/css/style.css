@@ -201,8 +201,7 @@ input, textarea, select { font-family: inherit; }
   isolation: isolate;
   display: flex;
   align-items: center;
-  min-height: 100svh;
-  min-height: 100vh;
+  min-height: auto;
   background-color: var(--sage);
   /* Textura tipo tejido de camisa: trama diagonal fina + greca de rombos, muy sutil */
   background-image:
@@ -221,7 +220,7 @@ input, textarea, select { font-family: inherit; }
 }
 .hero-grid {
   display: grid; grid-template-columns: 1fr;
-  gap: 3.5rem; align-items: center;
+  gap: 3rem; align-items: start;
 }
 @media (min-width: 1024px) {
   .hero-grid { grid-template-columns: 1.05fr .95fr; gap: 4rem; }
@@ -248,10 +247,10 @@ input, textarea, select { font-family: inherit; }
 .hero-content {
   width: 100%; max-width: var(--max-w); margin-inline: auto;
   padding-inline: var(--px);
-  padding-top: 8rem; padding-bottom: 5rem;
+  padding-top: 7rem; padding-bottom: 3.5rem;
 }
 @media (min-width: 768px) {
-  .hero-content { padding-inline: var(--px-md); padding-top: 10rem; padding-bottom: 7rem; }
+  .hero-content { padding-inline: var(--px-md); padding-top: 7.5rem; padding-bottom: 4rem; }
 }
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: .75rem;
@@ -305,14 +304,15 @@ input, textarea, select { font-family: inherit; }
    ════════════════════════════════════════════ */
 #coleccion { background: white; padding-top: 3.5rem; padding-bottom: 6rem; }
 @media (min-width: 768px) { #coleccion { padding-top: 4.5rem; padding-bottom: 8rem; } }
-.collection-header { margin-bottom: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.collection-header { margin-bottom: 2.5rem; display: grid; grid-template-columns: minmax(0,1fr); gap: 1.25rem; align-items: start; }
+.collection-header > .label { grid-column: 1 / -1; }
 @media (min-width: 768px) {
-  .collection-header { flex-direction: row; align-items: flex-end; justify-content: space-between; margin-bottom: 3rem; }
+  .collection-header { grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); column-gap: 3rem; margin-bottom: 3rem; }
 }
-.collection-header-left { max-width: 42rem; }
-.collection-header-left h2 {
+.collection-header h2 {
+  max-width: 42rem;
   font-family: 'Avoda', 'Cormorant Garamond', Georgia, serif;
-  margin-top: 1.25rem;
+  margin: 0;
   font-size: clamp(2rem, 4vw, 3.5rem);
   color: var(--navy); line-height: 1.1;
 }
