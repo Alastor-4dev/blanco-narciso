@@ -9,3 +9,27 @@
 .pilot-header .nav-brand img{width:72px;height:72px}.pilot-header .nav-wordmark{font-size:32px}.pilot-header .nav-tagline{font-size:9px}.manage-cards{margin-bottom:20px}.manage-cards>summary{font-size:11px;cursor:pointer;min-height:32px}.card-selection{margin-top:12px}.pilot-footer{margin-top:40px}.pilot-terms{margin-top:22px}@media(max-width:360px){.pilot-header .nav-brand img{width:60px;height:60px}.pilot-header .nav-wordmark{font-size:27px}}
 
 .member-details{margin:18px 0 24px}.member-details>div{padding:12px 0;border-bottom:1px solid #ffffff40}.member-details dt{font-size:8px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}.member-details dd{margin:0;font-size:13px;line-height:1.5;overflow-wrap:anywhere}.member-details a{color:inherit;text-decoration:underline;text-underline-offset:4px;display:inline-flex;align-items:center;min-height:44px}.member-extras{margin:0 0 20px}.member-extras>div:last-child{border-bottom:0}.member-extras dd{font-size:14px}
+
+/* The preview follows Wallet's native header, barcode, fields and separate hero strip. */
+.wallet-native-mount{padding:0;background:transparent;transform:none;box-shadow:0 20px 50px #1a2b4a20;border-radius:22px;overflow:hidden}
+.wallet-native-pass{border:0;border-radius:22px 22px 0 0;padding:28px 24px 22px;background-image:linear-gradient(180deg,#ffffff05,#00000014);font-family:Roboto,Arial,sans-serif}
+.wallet-native-pass .pass-brand{display:block;text-align:center}
+.wallet-native-pass .pass-brand>img{width:240px;max-width:80%;height:auto;display:block;margin:0 auto 14px}
+.wallet-native-pass .wallet-title{font:700 52px/1.12 Roboto,Arial,sans-serif;text-align:center;margin:14px auto 17px;max-width:300px;text-wrap:balance;color:#fff}
+.wallet-native-pass .pass-title{font:400 17px/1.4 Roboto,Arial,sans-serif;text-align:center;margin:0 0 19px}
+.wallet-native-pass .barcode-panel{padding:16px 14px 10px;border-radius:16px;background:#fff}
+.wallet-native-pass .pilot-barcode{height:104px;object-fit:fill}
+.wallet-native-pass .barcode-panel p{font:500 11px/1.4 Roboto,Arial,sans-serif;letter-spacing:.03em;margin:7px 0 0}
+.wallet-native-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:18px;row-gap:21px;margin:25px 0 0}
+.wallet-native-fields>div{border:0;padding:0;min-width:0}
+.wallet-native-fields>div:nth-child(2),.wallet-native-fields>div:last-child{text-align:right}
+.wallet-native-fields .member-birthday{grid-column:1/-1}
+.wallet-native-fields dt{font:400 14px/1.4 Roboto,Arial,sans-serif;text-transform:none;letter-spacing:0;margin-bottom:5px}
+.wallet-native-fields dd{font:500 16px/1.4 Roboto,Arial,sans-serif;overflow-wrap:anywhere}
+.wallet-progress-accessible{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap;border:0}
+.wallet-native-strip{background:#6f917e;color:#fff}
+.wallet-native-strip>img{display:block;width:100%;height:auto}
+.wallet-native-strip .pass-progress{padding:0 24px 20px;margin:0;font:12px/1.4 Roboto,Arial,sans-serif}
+.wallet-native-links{background:#6a8a77;color:#fff;margin:0;padding:0 24px 15px}
+.wallet-native-links>div{border:0;padding:12px 0 0}
+@media(max-width:360px){.wallet-native-pass{padding:24px 18px 20px}.wallet-native-pass .wallet-title{font-size:43px}.wallet-native-pass .pass-brand>img{width:210px;max-width:90%}.wallet-native-fields{gap:18px 12px}.wallet-native-fields dd{font-size:14px}.wallet-native-pass .pass-title{font-size:16px}}

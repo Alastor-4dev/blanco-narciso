@@ -11,15 +11,15 @@ function birthDateLabel(value) {
 }
 function classDesign() {
   return {
-    programName:'Sigue floreciendo',
+    programName:'Blanco Narciso',
     hexBackgroundColor:'#6f917e',
     accountIdLabel:'ID de florista',accountNameLabel:'Nombre',
     programLogo:{sourceUri:{uri:assetBase+'wallet-logo-v2.png'}},
     wideProgramLogo:{sourceUri:{uri:assetBase+'wallet-wordmark-v4.png'}},
-    textModulesData:[{id:'terminos',header:'Términos y condiciones',body:terms}],
+    textModulesData:[{id:'frase',body:'Sigue floreciendo'},{id:'terminos',header:'Términos y condiciones',body:terms}],
     linksModuleData:{uris:[{id:'instagram',uri:instagram,description:'Instagram · @blanconarcisomx'}]},
     classTemplateInfo:{
-      cardBarcodeSectionDetails:{firstTopDetail:{fieldSelector:{fields:[{fieldPath:'object.accountId'}]}}},
+      cardBarcodeSectionDetails:{firstTopDetail:{fieldSelector:{fields:[{fieldPath:"class.textModulesData['frase']"}]}}},
       cardTemplateOverride:{cardRowTemplateInfos:[
         {twoItems:{startItem:field('object.accountId'),endItem:field('object.accountName')}},
         {oneItem:{item:field("object.textModulesData['nacimiento']")}},

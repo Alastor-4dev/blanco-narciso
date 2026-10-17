@@ -12,14 +12,11 @@ function render(data) {
   $('pilot-remaining').textContent=data.remaining.toLocaleString('es-MX');
   $('pilot-remaining-line').textContent=data.stamps===5?'Tu detalle está listo':`Faltan ${5-data.stamps} sellos`;
   $('pilot-progress').value=data.points;$('pilot-progress').textContent=`${data.points} de 2,500`;
-  $('member-name').textContent=data.accountName;$('member-id').textContent=data.accountId;
+  $('member-name').textContent=data.accountName;$('member-id').textContent=data.accountId;$('barcode-member-id').textContent=data.accountId;
   $('member-birth').textContent=data.birthDate?new Intl.DateTimeFormat('es-MX',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(data.birthDate+'T12:00:00Z')):'Por completar';
   $('pilot-rewards').textContent=`${data.rewards} disponibles`;
-  $('pilot-seals').replaceChildren(...Array.from({length:5},(_,i)=>{
-    const seal=document.createElement('span');seal.className='stamp'+(i<data.stamps?' filled':'');
-    const logo=document.createElement('img');logo.src=i<data.stamps?'/img/logo-navy.png':'/img/logo-white.png';logo.alt=`Sello ${i+1}: ${i<data.stamps?'obtenido':'pendiente'}`;seal.append(logo);return seal;
-  }));
-  $('pilot-seals').setAttribute('aria-label',`${data.stamps} de cinco sellos obtenidos`);
+  $('wallet-seal-image').src='/img/wallet-sellos-v2-'+data.stamps+'.png';
+  $('wallet-seal-image').alt=`${data.stamps} de cinco sellos de Blanco Narciso obtenidos`;
   $('sync-state').textContent=data.syncStatus==='synced'?'Saldo enviado a Google Wallet.':'Sincronización pendiente. El movimiento está guardado.';
   $('history').replaceChildren(...(data.events.length?data.events.slice().reverse().map(event=>{
     const li=document.createElement('li');li.textContent=`${event.reference} · ${(event.cents/100).toLocaleString('es-MX')} puntos · ${new Date(event.at).toLocaleString('es-MX')}`;return li;
