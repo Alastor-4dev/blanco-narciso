@@ -8,6 +8,7 @@ async function api(route,body,card=activeCard) {
 }
 function render(data) {
   $('pilot-points').textContent=data.points.toLocaleString('es-MX');
+  $('pilot-spend').textContent=data.points.toLocaleString('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:2})+' MXN';
   $('pilot-stamps').textContent=`${data.stamps} de 5`;
   $('pilot-remaining').textContent=data.remaining.toLocaleString('es-MX');
   $('pilot-remaining-line').textContent=data.stamps===5?'Tu detalle está listo':`Faltan ${5-data.stamps} sellos`;
@@ -44,7 +45,7 @@ async function loadCards(selected) {
   const {cards}=await api('/cards');
   $('card-select').replaceChildren(...cards.map(card=>{const o=document.createElement('option');o.value=card.objectId;o.textContent=card.accountName;return o;}));
   const chosen=cards.find(c=>c.objectId===selected) || cards[0];
-  if(!chosen)throw Error('No hay tarjetas de prueba configuradas.');
+  if(!chosen)throw Error('No hay tarjetas configuradas.');
   $('card-select').value=chosen.objectId;await loadCard(chosen.objectId);
 }
 function switchTab(name,focus=false) {
@@ -60,12 +61,12 @@ for(const name of ['save','purchase']){
 $('card-select').addEventListener('change',e=>loadCard(e.target.value));
 $('purchase-form').addEventListener('submit',async event=>{
   event.preventDefault();$('purchase-submit').disabled=true;$('card-select').disabled=true;$('status').textContent='Guardando y enviando saldo a Google Wallet…';
-  try{const data=await api('/purchases',{amount:$('amount').value,reference:$('ticket').value.trim()});render(data);$('status').textContent=data.warning || 'Compra de prueba guardada. El nuevo saldo se envió a tu tarjeta.';$('purchase-form').reset();}
+  try{const data=await api('/purchases',{amount:$('amount').value,reference:$('ticket').value.trim()});render(data);$('status').textContent=data.warning || 'Compra guardada. El nuevo saldo se envió a tu tarjeta.';$('purchase-form').reset();}
   catch(e){$('status').textContent=e.message;}finally{$('purchase-submit').disabled=false;$('card-select').disabled=false;}
 });
 $('new-card-form').addEventListener('submit',async event=>{
-  event.preventDefault();const button=event.target.querySelector('button');button.disabled=true;$('card-select').disabled=true;$('status').textContent='Creando una tarjeta individual de prueba…';
-  try{const card=await api('/cards',{alias:$('card-alias').value.trim()});await loadCards(card.objectId);$('status').textContent='Tarjeta individual creada. Autoriza el correo de la otra persona en las cuentas de prueba de Google antes de guardarla.';$('new-card-form').reset();document.querySelector('.new-card').open=false;switchTab('save');}
+  event.preventDefault();const button=event.target.querySelector('button');button.disabled=true;$('card-select').disabled=true;$('status').textContent='Creando una tarjeta individual…';
+  try{const card=await api('/cards',{alias:$('card-alias').value.trim()});await loadCards(card.objectId);$('status').textContent='Tarjeta individual creada. Ya puedes abrir su enlace de Google Wallet.';$('new-card-form').reset();document.querySelector('.new-card').open=false;switchTab('save');}
   catch(e){$('status').textContent=e.message;}finally{button.disabled=false;$('card-select').disabled=false;}
 });
 $('sync').addEventListener('click',async()=>{ $('sync').disabled=true;$('card-select').disabled=true;try{render(await api('/sync',{}));$('status').textContent='Saldo enviado de nuevo a Google Wallet.';}catch(e){$('status').textContent=e.message;}finally{$('sync').disabled=false;$('card-select').disabled=false;} });

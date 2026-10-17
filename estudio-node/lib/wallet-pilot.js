@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {GoogleWallet,readConfig,privateDirectory,WalletError} = require('./google-wallet');
 const crypto = require('node:crypto');
+const {classDesign}=require('./wallet-design');
 const files = {
   config: () => process.env.GOOGLE_WALLET_CONFIG || path.join(privateDirectory(),'google-wallet.json'),
   ledger: () => process.env.WALLET_PILOT_LEDGER || path.join(privateDirectory(),'wallet-pilot-ledger.json')
@@ -25,10 +26,9 @@ function objectFields(cents) {
     secondaryLoyaltyPoints:{label:'Sellos',balance:{string:`${b.stamps} de 5`}},
     heroImage:{sourceUri:{uri:`https://alastor-4dev.github.io/blanco-narciso/img/wallet-sellos-v2-${b.stamps}.png`},contentDescription:{defaultValue:{language:'es-419',value:`${b.stamps} de cinco sellos de Blanco Narciso`}}},
     textModulesData:[
-      {id:'compras',header:'Compras de prueba acumuladas',body:`$${b.points.toFixed(2)} MXN`},
-      {id:'faltante',header:'Para tu recompensa',body:b.remaining===0?'Cinco sellos completos. Premio de prueba disponible.':`${b.remaining.toLocaleString('es-MX')} puntos pendientes de 2,500.`},
-      {id:'premios',header:'Recompensas de prueba',body:`${b.rewards} disponibles`},
-      {id:'prueba',header:'Tarjeta de prueba',body:'Prueba técnica sin compras reales ni validez comercial.'}
+      {id:'compras',header:'Compras acumuladas',body:`$${b.points.toFixed(2)} MXN`},
+      {id:'faltante',header:'Para tu recompensa',body:b.remaining===0?'Cinco sellos completos. Tu recompensa está disponible.':`${b.remaining.toLocaleString('es-MX')} puntos pendientes de 2,500.`},
+      {id:'premios',header:'Recompensas',body:`${b.rewards} disponibles`}
     ]
   };
 }
@@ -43,18 +43,16 @@ async function preparePilot(wallet = new GoogleWallet()) {
   try {cls = await wallet.request('loyaltyclass/'+classId);} catch(e) {
     if(e.status!==404) throw e;
     cls = await wallet.request('loyaltyclass',{method:'POST',body:{
-      id:classId,issuerName:'Blanco Narciso',programName:'Flores que vuelven',
-      programLogo:original.programLogo,hexBackgroundColor:original.hexBackgroundColor || '#6f917e',
+      id:classId,issuerName:'Blanco Narciso',...classDesign(),
       accountNameLabel:'Nombre',accountIdLabel:'ID de miembro',reviewStatus:'UNDER_REVIEW',
       countryCode:'MX',multipleDevicesAndHoldersAllowedStatus:'ONE_USER_ALL_DEVICES',
-      textModulesData:original.textModulesData || [],
       homepageUri:{uri:'https://alastor-4dev.github.io/blanco-narciso/',description:'Blanco Narciso'}
     }});
   }
   let obj;
   try {obj = await wallet.request('loyaltyobject/'+objectId);} catch(e) {
     if(e.status!==404) throw e;
-    obj = await wallet.request('loyaltyobject',{method:'POST',body:{id:objectId,classId,state:'ACTIVE',accountName:'Cliente de prueba',accountId:'BNTEST0001',barcode:{type:'CODE_128',value:'BNTEST0001',alternateText:'BNTEST0001'},...objectFields(0)}});
+    obj = await wallet.request('loyaltyobject',{method:'POST',body:{id:objectId,classId,state:'ACTIVE',accountName:'Cliente',accountId:'BNTEST0001',barcode:{type:'CODE_128',value:'BNTEST0001',alternateText:'BNTEST0001'},...objectFields(0)}});
   }
   config.classId = sourceId; config.pilotClassId = classId; config.pilotObjectId = objectId;
   writePrivate(files.config(),config);
@@ -69,7 +67,7 @@ class WalletPilot {
   }
   summary() {
     const data=this.ledger();
-    return {objectId:data.objectId,accountName:data.accountName || 'Cliente de prueba',accountId:data.accountId || 'BNTEST0001',...balance(data.cents),syncStatus:data.syncStatus,events:data.events};
+    return {objectId:data.objectId,accountName:data.accountName || 'Cliente',accountId:data.accountId || 'BNTEST0001',...balance(data.cents),syncStatus:data.syncStatus,events:data.events};
   }
   async synchronize() {
     const data=this.ledger();
@@ -91,8 +89,8 @@ class WalletPilot {
       if(cents<=0) throw new WalletError(400,'El importe debe ser mayor a cero.');
       if(typeof reference!=='string' || !/^[A-Za-z0-9_-]{3,40}$/.test(reference)) throw new WalletError(400,'Usa una referencia de 3 a 40 letras, números, guiones o guion bajo.');
       const data=this.ledger();
-      if(data.events.some(e=>e.reference===reference)) throw new WalletError(409,'Ese ticket de prueba ya está registrado.');
-      if(data.cents+cents>250000) throw new WalletError(400,'Este piloto admite hasta 2,500 puntos. Falta definir las reglas para excedentes.');
+      if(data.events.some(e=>e.reference===reference)) throw new WalletError(409,'Ese ticket ya está registrado.');
+      if(data.cents+cents>250000) throw new WalletError(400,'La tarjeta admite hasta 2,500 puntos.');
       data.cents+=cents; data.events.push({reference,cents,at:new Date().toISOString()}); data.syncStatus='pending';
       writePrivate(this.ledgerFile,data);
       try {return await this.synchronize();} catch {return {...this.summary(),warning:'La compra quedó guardada; la sincronización con Google está pendiente. Reintenta la sincronización sin registrar otra vez el ticket.'};}
@@ -103,17 +101,18 @@ class WalletPilot {
 function cardsFile() {return path.join(privateDirectory(),'wallet-pilot-cards.json');}
 function listCards() {
   const config=readConfig();
-  const initial={objectId:config.pilotObjectId,accountName:'Mi tarjeta de prueba',accountId:'BNTEST0001',original:true};
+  const primary=fs.existsSync(files.ledger())?JSON.parse(fs.readFileSync(files.ledger(),'utf8')):{};
+  const initial={objectId:config.pilotObjectId,accountName:primary.accountName || 'Mi tarjeta',accountId:primary.accountId || 'BNTEST0001',original:true};
   const extra=fs.existsSync(cardsFile())?JSON.parse(fs.readFileSync(cardsFile(),'utf8')):[];
   return [initial,...extra].filter(c=>c.objectId);
 }
 function ledgerForCard(objectId) {
   const card=listCards().find(c=>c.objectId===objectId);
-  if(!card)throw new WalletError(404,'Tarjeta de prueba no encontrada.');
+  if(!card)throw new WalletError(404,'Tarjeta no encontrada.');
   return card.original ? files.ledger() : path.join(privateDirectory(),'pilot-cards',card.accountId+'.json');
 }
 async function createCard(wallet,alias) {
-  if(typeof alias!=='string' || alias.trim().length<2 || alias.trim().length>40)throw new WalletError(400,'Escribe un alias de prueba de 2 a 40 caracteres.');
+  if(typeof alias!=='string' || alias.trim().length<2 || alias.trim().length>40)throw new WalletError(400,'Escribe un nombre de 2 a 40 caracteres.');
   const name=alias.trim();
   const config=readConfig();
   const suffix=crypto.randomBytes(6).toString('hex');
