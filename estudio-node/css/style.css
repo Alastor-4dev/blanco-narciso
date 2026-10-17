@@ -294,21 +294,6 @@ input, textarea, select { font-family: inherit; }
   transition: background .2s, color .2s;
 }
 .btn-outline-white:hover { background: white; color: var(--navy); }
-.hero-stats {
-  margin-top: 5rem;
-  display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem;
-  max-width: 42rem;
-  border-top: 1px solid rgba(255,255,255,.15); padding-top: 2rem;
-  color: rgba(255,255,255,.85);
-}
-@media (min-width: 768px) { .hero-stats { margin-top: 7rem; gap: 3rem; } }
-.stat-num {
-  font-family: 'Avoda', 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(2rem, 4vw, 2.75rem);
-  color: var(--gold-soft);
-  line-height: 1;
-}
-.stat-label { margin-top: .35rem; font-size: .6875rem; text-transform: uppercase; letter-spacing: .22em; }
 #top .hero-scroll {
   position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
   font-size: .625rem; text-transform: uppercase; letter-spacing: .4em;
