@@ -46,3 +46,8 @@ Validación automática sin credenciales: `npm run test:wallet`. El registro de 
 ### Identidad visual del pase y pruebas con otras personas
 
 El panel local incorpora el verde texturizado, tipografía y logotipos del sitio. Permite crear tarjetas de prueba distintas con alias ficticios y saldo separado. Mientras el emisor esté en modo demo, autorizar los correos en las cuentas de prueba de Google Wallet; no reutilizar un pase que ya está asociado a otro usuario. La tipografía de los campos nativos de Wallet es controlada por Google; el logotipo horizontal y las imágenes de sellos conservan los elementos de marca. El QR incluye el narciso y una opción para ampliarlo.
+
+
+## Elegir fotos desde el panel
+
+El editor permite abrir el selector de archivos de la computadora o elegir una foto ya guardada en `img/`, con vista previa y carga protegida. Instrucciones y límites en [PRODUCTOS.md](PRODUCTOS.md). Requiere Node.js 20.9 o posterior.

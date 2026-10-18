@@ -115,6 +115,8 @@ app.get('/api/admin/products', requireAuth, (req, res) => {
   res.json(readProducts());
 });
 
+require('./lib/product-images')(app,{requireAuth,imageDirectory:path.join(__dirname,'img')});
+
 // Solo se aceptan imágenes locales de la carpeta img/
 function validImg(img) {
   return typeof img === 'string' && /^img\/[\w. -]+\.(png|jpe?g|webp|gif)$/i.test(img);

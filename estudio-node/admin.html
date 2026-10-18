@@ -78,6 +78,24 @@
     .field textarea { resize: vertical; min-height: 4rem; }
     .row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; }
     .editor-actions { display: flex; gap: .75rem; margin-top: 1rem; }
+    .image-actions { display: flex; flex-wrap: wrap; gap: .65rem; margin: .6rem 0; }
+    .image-actions button { min-height: 44px; }
+    .image-preview { width: 132px; height: 160px; object-fit: cover; background: var(--ice); border: 1px solid #d6deeb; border-radius: .2rem; }
+    .image-help, .image-status { font-size: .78rem; color: var(--navy-soft); line-height: 1.6; margin-top: .5rem; }
+    .image-status[data-error="true"] { color: #b3261e; }
+    .image-path { margin-top: .7rem; font-size: .78rem; }
+    .image-path summary { cursor: pointer; padding-block: .35rem; }
+    .image-library { border: 1px solid #d6deeb; padding: 1rem; margin-top: .85rem; background: var(--cloud); }
+    .image-library input { background: white; margin-bottom: .85rem; }
+    .image-options { display: grid; grid-template-columns: repeat(auto-fill,minmax(105px,1fr)); gap: .75rem; max-height: 380px; overflow-y: auto; }
+    .image-option { display: flex; flex-direction: column; gap: .4rem; padding: .4rem; min-width: 0; border: 1px solid #d6deeb; background: white; color: var(--navy); text-align: left; }
+    .image-option:hover, .image-option[aria-pressed="true"] { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+    .image-option img { width: 100%; height: 100px; object-fit: cover; }
+    .image-option span { font-size: .7rem; overflow-wrap: anywhere; }
+    .image-empty { grid-column: 1 / -1; font-size: .8rem; }
+    button:disabled { cursor: wait; opacity: .6; }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+    [hidden] { display: none !important; }
 
     .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--navy); color: white; padding: .7rem 1.4rem; border-radius: .25rem; font-size: .85rem; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 99; }
     .toast.show { opacity: 1; }
@@ -85,6 +103,9 @@
     @media (max-width: 640px) {
       .product-card { grid-template-columns: 1fr; }
       .p-actions { flex-direction: row; align-items: center; flex-wrap: wrap; }
+      .topbar { flex-wrap: wrap; gap: 1rem; }
+      .row-3 { grid-template-columns: 1fr; }
+      .editor { padding: 1rem; }
     }
   </style>
 </head>
@@ -128,6 +149,7 @@
   'use strict';
   let token = sessionStorage.getItem('bn_token') || '';
   let products = [];
+  let editorRevision = 0;
 
   const $ = id => document.getElementById(id);
   const fmt = n => '$' + Number(n).toLocaleString('es-MX') + ' MXN';
@@ -146,7 +168,7 @@
   async function api(path, opts = {}) {
     const res = await fetch(path, {
       ...opts,
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, ...(opts.headers || {}) }
+      headers: { ...(opts.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }), 'Authorization': 'Bearer ' + token, ...(opts.headers || {}) }
     });
     if (res.status === 401) { logout(); throw new Error('Sesión expirada'); }
     const data = await res.json();
@@ -239,29 +261,113 @@
   /* ── Editor (agregar / editar) ── */
   window.openEditor = (id) => {
     const p = id ? products.find(x => x.id === id) : null;
+    const revision = ++editorRevision;
     $('editor-slot').innerHTML = `
       <div class="editor">
         <h3>${p ? 'Editar: ' + esc(p.name) : 'Nuevo arreglo'}</h3>
         <div class="field"><label>Nombre</label><input id="f-name" value="${p ? esc(p.name) : ''}"></div>
         <div class="field"><label>Etiqueta (ej. Edición limitada)</label><input id="f-tagline" value="${p ? esc(p.tagline) : ''}"></div>
         <div class="field"><label>Descripción</label><textarea id="f-desc">${p ? esc(p.desc) : ''}</textarea></div>
-        <div class="field"><label>Imagen (ruta, ej. img/ramo01.png)</label><input id="f-img" value="${p ? esc(p.img) : 'img/ramo01.png'}"></div>
+        <div class="field">
+          <label for="f-image-file">Foto del arreglo</label>
+          <img id="f-image-preview" class="image-preview" src="${p ? esc(p.img) : 'img/ramo01.png'}" alt="Vista previa de la foto del arreglo">
+          <div class="image-actions">
+            <button id="choose-image" type="button" class="btn-ghost">Buscar en mis archivos</button>
+            <button id="choose-library" type="button" class="btn-ghost" aria-expanded="false" aria-controls="image-library">Imágenes guardadas</button>
+          </div>
+          <input id="f-image-file" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" hidden>
+          <p class="image-help">Elige una foto JPG, PNG o WebP de hasta 8 MB. Verás aquí la imagen antes de guardar el arreglo.</p>
+          <p id="image-status" class="image-status" role="status" aria-live="polite"></p>
+          <div id="image-library" class="image-library" hidden>
+            <label for="image-search">Buscar entre las fotos guardadas</label>
+            <input id="image-search" type="search" placeholder="Ej. ramo" autocomplete="off">
+            <div id="image-options" class="image-options"></div>
+          </div>
+          <details class="image-path"><summary>Ver o escribir la ruta de la imagen</summary><label for="f-img">Ruta de la imagen</label><input id="f-img" value="${p ? esc(p.img) : 'img/ramo01.png'}"></details>
+        </div>
         <div class="row-3">
           <div class="field"><label>Precio chico (MXN)</label><input id="f-chico" type="number" min="0" value="${p ? p.prices.chico : ''}"></div>
           <div class="field"><label>Precio mediano (MXN)</label><input id="f-mediano" type="number" min="0" value="${p ? p.prices.mediano : ''}"></div>
           <div class="field"><label>Precio grande (MXN)</label><input id="f-grande" type="number" min="0" value="${p ? p.prices.grande : ''}"></div>
         </div>
         <div class="editor-actions">
-          <button class="btn-primary" onclick="saveEditor('${id || ''}')">Guardar</button>
+          <button id="save-product" class="btn-primary" onclick="saveEditor('${id || ''}')">Guardar</button>
           <button class="btn-ghost" onclick="closeEditor()">Cancelar</button>
         </div>
       </div>`;
+    bindImagePicker(revision);
     $('editor-slot').scrollIntoView({ behavior: 'smooth' });
   };
 
-  window.closeEditor = () => { $('editor-slot').innerHTML = ''; };
+  window.closeEditor = () => { editorRevision++; $('editor-slot').innerHTML = ''; };
+
+  function bindImagePicker(revision) {
+    let images = [];
+    const active = () => revision === editorRevision && $('f-img');
+    const setStatus = (message, error = false) => {
+      if (!active()) return;
+      $('image-status').textContent = message;
+      $('image-status').dataset.error = String(error);
+    };
+    const select = imagePath => {
+      if (!active()) return;
+      $('f-img').value = imagePath;
+      $('f-image-preview').src = imagePath;
+      $('f-image-preview').hidden = false;
+      renderLibrary();
+    };
+    const renderLibrary = () => {
+      if (!active()) return;
+      const query = $('image-search').value.trim().toLocaleLowerCase('es');
+      const matches = images.filter(image => image.name.toLocaleLowerCase('es').includes(query));
+      const elements = matches.map(image => {
+        const button = document.createElement('button');
+        button.type = 'button'; button.className = 'image-option';
+        button.setAttribute('aria-label', 'Elegir ' + image.name);
+        button.setAttribute('aria-pressed', String($('f-img').value === image.path));
+        const photo = document.createElement('img'); photo.src = image.path; photo.alt = ''; photo.loading = 'lazy';
+        const name = document.createElement('span'); name.textContent = image.name;
+        button.append(photo, name);
+        button.addEventListener('click', () => { select(image.path); setStatus('Foto seleccionada. Pulsa Guardar para aplicar el cambio.'); });
+        return button;
+      });
+      if (!elements.length) {
+        const empty = document.createElement('p'); empty.className = 'image-empty'; empty.textContent = 'No hay fotos que coincidan con tu búsqueda.'; elements.push(empty);
+      }
+      $('image-options').replaceChildren(...elements);
+    };
+    $('choose-image').addEventListener('click', () => $('f-image-file').click());
+    $('f-image-file').addEventListener('change', async event => {
+      const file = event.target.files[0]; if (!file) return;
+      if (file.size > 8 * 1024 * 1024) { setStatus('La foto supera el máximo de 8 MB.', true); event.target.value = ''; return; }
+      $('image-library').hidden = true; $('choose-library').setAttribute('aria-expanded', 'false');
+      const data = new FormData(); data.append('image', file);
+      $('save-product').disabled = true; $('choose-image').disabled = true; $('choose-library').disabled = true;
+      setStatus('Subiendo y preparando la foto…');
+      try {
+        const image = await api('/api/admin/images', { method: 'POST', body: data });
+        if (!active()) return;
+        select(image.path);
+        images.unshift({ path: image.path, name: file.name }); renderLibrary();
+        setStatus('Foto lista. Pulsa Guardar para aplicar el cambio al arreglo.');
+      } catch (error) { setStatus(error.message, true); }
+      finally { if (active()) { $('save-product').disabled = false; $('choose-image').disabled = false; $('choose-library').disabled = false; $('f-image-file').value = ''; } }
+    });
+    $('choose-library').addEventListener('click', async () => {
+      const open = $('image-library').hidden;
+      $('image-library').hidden = !open; $('choose-library').setAttribute('aria-expanded', String(open));
+      if (!open) return;
+      setStatus('Cargando fotos guardadas…');
+      try { const data = await api('/api/admin/images'); if (!active()) return; images = data.images; renderLibrary(); setStatus('Elige una foto o busca por su nombre.'); if (!$('image-library').hidden) $('image-search').focus(); }
+      catch (error) { setStatus(error.message, true); }
+    });
+    $('image-search').addEventListener('input', renderLibrary);
+    $('f-img').addEventListener('input', event => { if (/^img\/[\w. -]+\.(png|jpe?g|webp|gif)$/i.test(event.target.value.trim())) $('f-image-preview').src = event.target.value.trim(); });
+    $('f-image-preview').addEventListener('error', () => { if (!active()) return; $('f-image-preview').hidden = true; setStatus('No se pudo mostrar esa foto. Elige otra o revisa su ruta.', true); });
+  }
 
   window.saveEditor = async (id) => {
+    if ($('save-product').disabled) return;
     const body = {
       name: $('f-name').value.trim(),
       tagline: $('f-tagline').value.trim(),
